@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:todo/src/screens/screens.dart';
 
+import '../models/task.dart';
 import '../widgets/widgets.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Task> tasks = [
+    Task(name: "make purchase"),
+    Task(name: "close door"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
+              const Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -48,7 +57,9 @@ class HomeScreen extends StatelessWidget {
                         topRight: Radius.circular(20)),
                     color: Colors.deepPurple[200],
                   ),
-                  child: TasksList(),
+                  child: TasksList(
+                    taskList: tasks,
+                  ),
                 ),
               )
             ],
@@ -58,7 +69,14 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => showModalBottomSheet(
           context: context,
-          builder: (BuildContext ctx) => AddTaskScreen(),
+          builder: (BuildContext ctx) => AddTaskScreen(
+            addTaskCallback: (newTaskTitle) {
+              setState(() {
+                tasks.add(Task(name: newTaskTitle));
+              });
+              Navigator.pop(context);
+            },
+          ),
         ),
         child: const Icon(
           Icons.add,

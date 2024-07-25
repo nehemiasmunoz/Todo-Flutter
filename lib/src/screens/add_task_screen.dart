@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:todo/src/models/task.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({
-    super.key,
-  });
+  const AddTaskScreen({super.key, required this.addTaskCallback});
+  final Function addTaskCallback;
 
   @override
   Widget build(BuildContext context) {
+    String textFieldValue = '';
+
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(
@@ -14,7 +16,7 @@ class AddTaskScreen extends StatelessWidget {
             left: 20,
             right: 30,
             bottom: MediaQuery.of(context).viewInsets.bottom),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
@@ -24,19 +26,20 @@ class AddTaskScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Text(
+            const Text(
               "Add task",
               style: TextStyle(fontSize: 25),
             ),
             TextField(
               autocorrect: true,
               textAlign: TextAlign.center,
+              onChanged: (newValue) => textFieldValue = newValue,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ElevatedButton(
-              onPressed: null,
+              onPressed: () => addTaskCallback(textFieldValue),
               child: Text("Add"),
             )
           ],
