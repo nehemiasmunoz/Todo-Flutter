@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/src/screens/screens.dart';
 
 import '../widgets/widgets.dart';
 
@@ -55,7 +56,10 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          builder: (BuildContext ctx) => AddTaskScreen(),
+        ),
         child: const Icon(
           Icons.add,
           size: 30,
