@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/src/provider/task_provider.dart';
 import 'package:todo/src/screens/screens.dart';
 
-import '../models/task.dart';
 import '../widgets/widgets.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  List<Task> tasks = [
-    Task(name: "make purchase"),
-    Task(name: "close door"),
-  ];
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,26 +15,26 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
+              Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       child: Icon(
                         Icons.menu,
                         size: 30,
                         color: Colors.purple,
                       ),
                     ),
-                    Text(
+                    const Text(
                       "Todo's",
                       style: TextStyle(fontSize: 28),
                     ),
                     Text(
-                      "10 Tasks",
-                      style: TextStyle(fontSize: 20),
+                      "${Provider.of<TaskProvider>(context).tasks.length} Tasks",
+                      style: const TextStyle(fontSize: 20),
                     )
                   ],
                 ),
@@ -57,9 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         topRight: Radius.circular(20)),
                     color: Colors.deepPurple[200],
                   ),
-                  child: TasksList(
-                    taskList: tasks,
-                  ),
+                  child: TasksList(),
                 ),
               )
             ],
@@ -69,14 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => showModalBottomSheet(
           context: context,
-          builder: (BuildContext ctx) => AddTaskScreen(
-            addTaskCallback: (newTaskTitle) {
-              setState(() {
-                tasks.add(Task(name: newTaskTitle));
-              });
-              Navigator.pop(context);
-            },
-          ),
+          builder: (BuildContext ctx) => AddTaskScreen(),
         ),
         child: const Icon(
           Icons.add,
